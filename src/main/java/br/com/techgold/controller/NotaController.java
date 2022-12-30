@@ -35,6 +35,12 @@ public class NotaController {
 			return notaRepository.save(nota);
 	}
 	
+	@GetMapping("id")
+	public Nota notaPorId(@RequestParam(name = "id") Long id) {
+		return notaRepository.findById(id).get();
+	}
+	
+	
 	@PutMapping
 	public Nota atualizar(@RequestBody Nota nota) {
 		return notaRepository.saveAndFlush(nota);

@@ -1,5 +1,4 @@
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +6,6 @@
 		integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<title>Notas</title>
 </head>
-
 <body>
 	<div class="container">
 		<br />
@@ -83,7 +81,6 @@
 			</div>
 		</nav>
 		<!-- ################### BARRA DE NAVEGAÇÃO  -->
-
 		<hr class="bg-danger border-2 border-top border-danger">
 
 		<table class="table" id="tabela-clientes">
@@ -100,8 +97,6 @@
 			</tbody>
 		</table>
 
-
-
 		<br /><br />
 		<footer class="bg-light text-center text-white">
 			<!-- Grid container -->
@@ -111,19 +106,15 @@
 					<!-- Facebook -->
 					<a class="btn btn-primary btn-floating m-1" style="background-color: rgb(249, 240, 107);" href="#!"
 						role="button"><i class="fab fa-facebook-f"></i></a>
-
 					<!-- Twitter -->
 					<a class="btn btn-primary btn-floating m-1" style="background-color: rgb(248, 228, 92);" href="#!"
 						role="button"><i class="fab fa-twitter"></i></a>
-
 					<!-- Google -->
 					<a class="btn btn-primary btn-floating m-1" style="background-color: rgb(246, 211, 45);" href="#!"
 						role="button"><i class="fab fa-google"></i></a>
-
 					<!-- Instagram -->
 					<a class="btn btn-primary btn-floating m-1" style="background-color: rgb(245, 194, 17);" href="#!"
 						role="button"><i class="fab fa-instagram"></i></a>
-
 					<!-- Linkedin -->
 					<a class="btn btn-primary btn-floating m-1" style="background-color: rgb(229, 165, 10);" href="#!"
 						role="button"><i class="fab fa-linkedin-in"></i></a>
@@ -148,16 +139,22 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="exampleModalLabel">Edição Cliente</h1>
+						<h1 class="modal-title fs-5" id="exampleModalLabel">Edição Nota</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<label class="form-label" for="id">ID</label>
-						<input type="text" id="idmodal" class="form-control" readonly>
-						<label class="form-label" for="nome">Nome</label>
+						<label class="form-label" for="ididmodal">ID</label>
+						<input type="text" id="idmodal" class="form-control" style="width: 80px;" readonly>
+						<label class="form-label" for="idmodalcliente">ID Cliente</label>
+						<input type="text" id="idmodalcliente" class="form-control" style="width: 80px;" readonly>
+						<label class="form-label" for="nomemodal">Nome</label>
 						<input type="text" id="nomemodal" class="form-control">
-						<label class="form-label" for="endereco">Endereço</label>
-						<input type="text" id="enderecomodal" class="form-control">
+						<label class="form-label" for="conteudomodal">Conteúdo</label>
+						<input type="text" id="conteudomodal" class="form-control">
+						<label class="form-label" for="senhamodal">Senha</label>
+						<input type="text" id="senhamodal" class="form-control" style="width: 300px;">
+						<label class="form-label" for="observacaomodal">Observação</label>
+						<input type="text" id="observacaomodal" class="form-control">
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -226,14 +223,20 @@
 			$.ajax({
 				type: "GET",
 				contentType: "application/json",
-				url: "/techpass/cliente/id?id=" + id,
+				url: "/techpass/nota/id?id=" + id,
 				success: function (data) {
 					$('#idmodal').val("");
+					$('#idmodalcliente').val("");
 					$('#nomemodal').val("");
-					$('#enderecomodal').val("");
+					$('#conteudomodal').val("");
+					$('#senhamodal').val("");
+					$('#observacaomodal').val("");
 					$('#idmodal').val(data.id);
+					$('#idmodalcliente').val(data.cliente.id);
 					$('#nomemodal').val(data.nome);
-					$('#enderecomodal').val(data.endereco);
+					$('#conteudomodal').val(data.conteudo);
+					$('#senhamodal').val(data.senha);
+					$('#observacaomodal').val(data.observacao);
 				},
 				error: function (e) {
 					alert(e);
@@ -243,22 +246,33 @@
 		
 		function atualiza(){
 			var id = $('#idmodal').val();
+			var idCliente = $('#idmodalcliente').val();
 			var nome = $('#nomemodal').val();
-			var endereco = $('#enderecomodal').val();
+			var conteudo = $('#conteudomodal').val();
+			var senha = $('#senhamodal').val();
+			var observacao = $('#observacaomodal').val();
 			
 			$.ajax({
 				type: "PUT",
 				contentType: "application/json",
-				url: "/techpass/cliente",
-				data: JSON.stringify({
-					"id": id,
-					"nome": nome,
-					"endereco": endereco
-				}),
+				url: "/techpass/nota",
+				data: JSON.stringify(
+					{
+						"id": id,
+						"nome": nome,
+						"contaudo": conteudo,
+						"senha": senha,
+						"observacao": observacao,
+						"cliente":{
+							"id": idCliente
+						}
+					}
+				),
 				success: function (data) {
 					
 					var itens = 
 					'<tr id=linha' + data.id + '>'
+					+ '<td>' + data.cliente.nome + '</td>'
 					+ '<td>' + data.nome + '</td>'
 					+ '<td>'
 					+ ' <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick=editar(' + data.id + ')>Editar</button>'
