@@ -19,6 +19,10 @@ public class SistemaController {
 	public String listarClientes() {
 		return "clientes.html";
 	}
+	@GetMapping("/listarnotas")
+	public String listarNotas() {
+		return "notas.html";
+	}
 	@GetMapping("/clienteform")
 	public String clienteForm() {
 		return "clienteform.html";

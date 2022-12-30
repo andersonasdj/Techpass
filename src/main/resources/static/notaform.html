@@ -59,7 +59,7 @@
 								Notas
 							</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="#">Listar</a></li>
+								<li><a class="dropdown-item" href="/techpass/listarnotas">Listar</a></li>
 								<li><a class="dropdown-item" href="/techpass/notaform">Novo</a></li>
 								<li>
 									<hr class="dropdown-divider">
@@ -82,22 +82,23 @@
 			</div>
 		</nav>
 		<!-- ################### BARRA DE NAVEGAÇÃO  -->
-	
 		<hr class="bg-danger border-2 border-top border-danger">
 	
 		<form id="form-cliente">
 			<label for="id" class="form-laber">Id Nota</label> 
-			<input type="text" id="id" class="form-control" readonly>
-			<label for="idCliente" class="form-laber">Id Cliente</label> 
-			<input type="text" id="idCliente" class="form-control">
+			<input type="text" id="id" class="form-control" style="width: 100px;" readonly>
+			<label for="clientesoptions" class="form-laber">Cliente</label> 
+			<select class="form-select" id="clientesoptions" aria-label="Default select example" style="width: 250px;">
+				<option></option>
+			</select>
 			<label for="nome" class="form-laber">Nome</label> 
-			<input type="text" id="nome" class="form-control">
+			<input type="text" id="nome" class="form-control" style="width: 400px;">
 			<label for="conteudo" class="form-laber">Conteúdo</label> 
-			<input type="text" id="conteudo" class="form-control">
+			<input type="text" id="conteudo" class="form-control" style="width: 400px;">
 			<label for="senha" class="form-laber">Senha</label> 
-			<input type="password" id="senha" class="form-control">
+			<input type="password" id="senha" class="form-control" style="width: 400px;">
 			<label for="observacao" class="form-laber">Observação</label> 
-			<input type="text" id="observacao" class="form-control">
+			<input type="text" id="observacao" class="form-control" style="width: 400px;">
 		</form>
 		<button class="btn btn-success" onclick="salvar()">Salvar</button>
 		<button class="btn btn-secondary" onclick="limpar()">Limpar</button>
@@ -111,19 +112,15 @@
 					<!-- Facebook -->
 					<a class="btn btn-primary btn-floating m-1" style="background-color: rgb(249, 240, 107);" href="#!"
 						role="button"><i class="fab fa-facebook-f"></i></a>
-
 					<!-- Twitter -->
 					<a class="btn btn-primary btn-floating m-1" style="background-color: rgb(248, 228, 92);" href="#!"
 						role="button"><i class="fab fa-twitter"></i></a>
-
 					<!-- Google -->
 					<a class="btn btn-primary btn-floating m-1" style="background-color: rgb(246, 211, 45);" href="#!"
 						role="button"><i class="fab fa-google"></i></a>
-
 					<!-- Instagram -->
 					<a class="btn btn-primary btn-floating m-1" style="background-color: rgb(245, 194, 17);" href="#!"
 						role="button"><i class="fab fa-instagram"></i></a>
-
 					<!-- Linkedin -->
 					<a class="btn btn-primary btn-floating m-1" style="background-color: rgb(229, 165, 10);" href="#!"
 						role="button"><i class="fab fa-linkedin-in"></i></a>
@@ -142,7 +139,6 @@
 			</div>
 			<!-- Copyright -->
 		</footer>
-
 		
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.3.js"
@@ -155,13 +151,32 @@
 		integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">
 		</script>
 	<script>
+		var clientesOptions = $('#clientesoptions');
+		
+		$.ajax({
+			type: "GET",
+			contentType: "application/json",
+			url: "/techpass/cliente",
+			success: function (data) {
+				var itens = data.map(i =>
+					'<option id=linha' + i.id + ' value='+ i.id +'>'+ i.nome +'</option>'
+				);
+				clientesOptions.append(itens);
+			},
+			error: function (e) {
+				alert(e);
+			}
+		});
+		
+	</script>	
+	<script>
 		function salvar(){
 			var id = $('#id').val();
 			var nome = $('#nome').val();
 			var conteudo = $('#conteudo').val();
 			var senha = $('#senha').val();
 			var observacao = $('#observacao').val();
-			var idCliente = $('#idCliente').val();
+			var idCliente = $('#clientesoptions').val();
 			
 			$.ajax({
 				type: "POST",
