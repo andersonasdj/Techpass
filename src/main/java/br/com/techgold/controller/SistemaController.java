@@ -13,7 +13,7 @@ public class SistemaController {
 
 	@GetMapping("/home")
 	public String homePage() {
-		return "index.html";
+		return "home.html";
 	}
 	@GetMapping("/listarclientes")
 	public String listarClientes() {
