@@ -137,10 +137,21 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<label class="form-label" for="ididmodal">ID</label>
-						<input type="text" id="idmodal" class="form-control" style="width: 80px;" readonly>
-						<label class="form-label" for="idmodalcliente">ID Cliente</label>
-						<input type="text" id="idmodalcliente" class="form-control" style="width: 80px;" readonly>
+						<div class="row">
+							<div class="col-md-3">						
+								<label class="form-label" for="ididmodal">ID</label>
+								<input type="text" id="idmodal" class="form-control" style="width: 80px;" readonly>
+							</div>
+							<div class="col-md-3">	
+								<label class="form-label" for="idmodalcliente">ID Cliente</label>
+								<input type="text" id="idmodalcliente" class="form-control" style="width: 80px;" readonly>
+							</div>
+							<div class="col-md-5">	
+								<label class="form-label" for="atualizacaomodal">Atualização</label>
+								<p><b><span id="atualizacaomodal" style="font-size: 12"</span></b></p>
+							</div>
+						</div>	
+						
 						<label class="form-label" for="nomemodal">Nome</label>
 						<input type="text" id="nomemodal" class="form-control">
 						<label class="form-label" for="conteudomodal">Conteúdo</label>
@@ -156,11 +167,11 @@
 							onKeyUp="verificaForcaSenha();" style="width: 300px;">
 						<span id="password-status"></span><br />
 						<label class="form-label" for="observacaomodal">Observação</label>
-						<input type="text" id="observacaomodal" class="form-control">
+						<textarea id="observacaomodal" class="form-control"> </textarea>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" onclick="atualiza()">Save changes</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+						<button type="button" class="btn btn-primary" onclick="atualiza()">Salvar</button>
 					</div>
 				</div>
 			</div>
@@ -261,12 +272,14 @@
 					$('#conteudomodal').val("");
 					$('#senhamodal').val("");
 					$('#observacaomodal').val("");
+					$('#atualizacaomodal').text('');
 					$('#idmodal').val(data.id);
 					$('#idmodalcliente').val(data.cliente.id);
 					$('#nomemodal').val(data.nome);
 					$('#conteudomodal').val(data.conteudo);
 					$('#senhamodal').val(data.senha);
 					$('#observacaomodal').val(data.observacao);
+					$('#atualizacaomodal').append(data.atualizacao);
 				},
 				error: function (e) {
 					alert(e);

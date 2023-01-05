@@ -1,8 +1,10 @@
 package br.com.techgold.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,14 +26,21 @@ public class NotaController {
 	
 	@GetMapping
 	public List<Nota> listar(){
-		return notaRepository.findAll();
+		Sort sort =  Sort.by("cliente.nome").ascending();
+		
+		return notaRepository.findAll(sort);
 	}
 	
 	@PostMapping
 	public Nota salvar(@RequestBody Nota nota) {
+		
+		LocalDateTime data = LocalDateTime.now();
+		
 		if(nota.getId() != null){
+			nota.setAtualizacao(data);
 			return notaRepository.saveAndFlush(nota);
 		}else
+			nota.setAtualizacao(data);
 			return notaRepository.save(nota);
 	}
 	
@@ -43,6 +52,8 @@ public class NotaController {
 	
 	@PutMapping
 	public Nota atualizar(@RequestBody Nota nota) {
+		LocalDateTime data = LocalDateTime.now();
+		nota.setAtualizacao(data);
 		return notaRepository.saveAndFlush(nota);
 	}
 	

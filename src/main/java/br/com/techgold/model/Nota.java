@@ -1,6 +1,9 @@
 package br.com.techgold.model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +23,8 @@ public class Nota {
 	private String conteudo;
 	private String senha;
 	private String observacao;
+	@DateTimeFormat
+	private LocalDateTime atualizacao;
 
 	@OneToOne
 	private Cliente cliente;
@@ -27,7 +32,7 @@ public class Nota {
 	public Nota() {
 	}
 
-	public Nota(Long id, String nome, String conteudo, String senha, String observacao, Cliente cliente) {
+	public Nota(Long id, String nome, String conteudo, String senha, String observacao, Cliente cliente, LocalDateTime atualizacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -35,6 +40,7 @@ public class Nota {
 		this.senha = senha;
 		this.observacao = observacao;
 		this.cliente = cliente;
+		this.atualizacao = atualizacao;
 	}
 
 	public Long getId() {
@@ -83,6 +89,13 @@ public class Nota {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+	 public void setAtualizacao(LocalDateTime atualizacao) {
+		this.atualizacao = atualizacao;
+	}
+	 
+	public LocalDateTime getAtualizacao() {
+		return atualizacao;
 	}
 
 	@Override

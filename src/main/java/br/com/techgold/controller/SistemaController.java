@@ -10,7 +10,6 @@ public class SistemaController {
 	public String login() {
 		return "login.html";
 	}
-
 	@GetMapping("/home")
 	public String homePage() {
 		return "home.html";
