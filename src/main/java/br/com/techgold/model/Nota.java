@@ -17,6 +17,7 @@ import jakarta.persistence.Table;
 public class Nota {
 
 	@Id
+	//@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;

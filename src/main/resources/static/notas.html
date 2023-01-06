@@ -133,7 +133,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="exampleModalLabel">Edição Nota</h1>
+						<h1 class="modal-title fs-5" id="exampleModalLabel">Edição Nota - <span id="nomeclientemodal"></span></h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -152,19 +152,25 @@
 							</div>
 						</div>	
 						
-						<label class="form-label" for="nomemodal">Nome</label>
+						<label class="form-label mt-2" for="nomemodal">Nome</label>
 						<input type="text" id="nomemodal" class="form-control">
-						<label class="form-label" for="conteudomodal">Conteúdo</label>
+						<label class="form-label mt-2" for="conteudomodal">Conteúdo</label>
 						<input type="text" id="conteudomodal" class="form-control">
+						<label class="form-label mt-2" for="senhamodal">Senha</label>
+					
 
-						<label class="form-label" for="senhamodal">Senha 
-							<button onclick="changeviewer()" style="border: none;">
-								<img src="./assets/img/olho.png" style="height: 15px;">
-							</button>
-						</label>
-
-						<input type="password" id="senhamodal" class="form-control" minlength="6" maxlength="50"
-							onKeyUp="verificaForcaSenha();" style="width: 300px;">
+						<div class="row">
+							<div class="col-md-8">	
+								<input type="password" id="senhamodal" class="form-control" minlength="6" maxlength="50"
+									onKeyUp="verificaForcaSenha();" style="width: 320px;">
+									</div>
+							<div class="col-md-2 mt-2">	
+								<button onclick="changeviewer()" style="border: none;">
+										<img src="./assets/img/olho.png" style="height: 15px;">
+								</button>
+							</div>	
+						</div>
+							
 						<span id="password-status"></span><br />
 						<label class="form-label" for="observacaomodal">Observação</label>
 						<textarea id="observacaomodal" class="form-control"> </textarea>
@@ -240,23 +246,23 @@
 	</script>
 	<script>
 		function excluir(id) {
-			var t = "#linha" + id;
-			var remove = $(t).closest('tr');
-			$.ajax({
-				type: "DELETE",
-				contentType: "application/json",
-				url: "/techpass/nota?id=" + id,
-				success: function () {
-					if (confirm("Tem certeza que deseja excluir?") == true) {
+			if (confirm("Tem certeza que deseja excluir?") == true) {
+				var t = "#linha" + id;
+				var remove = $(t).closest('tr');
+				$.ajax({
+					type: "DELETE",
+					contentType: "application/json",
+					url: "/techpass/nota?id=" + id,
+					success: function () {
 						remove.fadeOut(1500, function () {
 							remove.remove();
 						});
+					},
+					error: function (e) {
+						alert(e);
 					}
-				},
-				error: function (e) {
-					alert(e);
-				}
-			});
+				});
+			}
 		}
 	</script>
 	<script>
@@ -266,14 +272,18 @@
 				contentType: "application/json",
 				url: "/techpass/nota/id?id=" + id,
 				success: function (data) {
+					$('#senhamodal').attr("type", 'password');
 					$('#idmodal').val("");
+					$('#nomeclientemodal').text('');
 					$('#idmodalcliente').val("");
 					$('#nomemodal').val("");
 					$('#conteudomodal').val("");
 					$('#senhamodal').val("");
 					$('#observacaomodal').val("");
 					$('#atualizacaomodal').text('');
+					$('#password-status').text('');
 					$('#idmodal').val(data.id);
+					$('#nomeclientemodal').text(data.cliente.nome);
 					$('#idmodalcliente').val(data.cliente.id);
 					$('#nomemodal').val(data.nome);
 					$('#conteudomodal').val(data.conteudo);
@@ -333,5 +343,4 @@
 		}
 	</script>
 </body>
-
 </html>

@@ -149,18 +149,10 @@
 						<input type="text" id="usuariomodal" class="form-control">
 						<label class="form-label" for="emailmodal">Email</label>
 						<input type="text" id="emailmodal" class="form-control">
-						<label class="form-label" for="cidademodal">Cidade</label>
-						<input type="text" id="cidademodal" class="form-control">
-						<label class="form-label" for="bairromodal">Bairro</label>
-						<input type="text" id="bairromodal" class="form-control">
-						<label class="form-label" for="ruamodal">Rua</label>
-						<input type="text" id="ruamodal" class="form-control">
-						<label class="form-label" for="numeromodal">Numero</label>
-						<input type="text" id="numeromodal" class="form-control">
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" onclick="atualiza()">Save changes</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+						<button type="button" class="btn btn-primary" onclick="atualiza()">Salvar</button>
 					</div>
 				</div>
 			</div>
@@ -202,23 +194,23 @@
 	</script>
 	<script>
 		function excluir(id) {
-			var t = "#linha" + id;
-			var remove = $(t).closest('tr');
-			$.ajax({
-				type: "DELETE",
-				contentType: "application/json",
-				url: "/techpass/usuario?id=" + id,
-				success: function () {
-					if(confirm ("Tem certeza que deseja excluir?") == true){
-						remove.fadeOut(1500, function () {
-							remove.remove();
-						});
+			if(confirm ("Tem certeza que deseja excluir?") == true){
+				var t = "#linha" + id;
+				var remove = $(t).closest('tr');
+				$.ajax({
+					type: "DELETE",
+					contentType: "application/json",
+					url: "/techpass/usuario?id=" + id,
+					success: function () {
+							remove.fadeOut(1500, function () {
+								remove.remove();
+							});
+					},
+					error: function (e) {
+						alert(e);
 					}
-				},
-				error: function (e) {
-					alert(e);
-				}
-			});
+				});
+			} 
 		}
 	</script>
 	<script>
@@ -232,18 +224,10 @@
 					$('#nomemodal').val("");
 					$('#usuariomodal').val("");
 					$('#emailmodal').val("");
-					$('#cidademodal').val("");
-					$('#bairromodal').val("");
-					$('#ruamodal').val("");
-					$('#numeromodal').val("");
 					$('#idmodal').val(data.id);
 					$('#nomemodal').val(data.nome);
 					$('#usuariomodal').val(data.usuario);
 					$('#emailmodal').val(data.email);
-					$('#cidademodal').val(data.endereco.cidade);
-					$('#bairromodal').val(data.endereco.bairro);
-					$('#ruamodal').val(data.endereco.rua);
-					$('#numeromodal').val(data.endereco.numero);
 				},
 				error: function (e) {
 					alert(e);
@@ -256,10 +240,6 @@
 			var nome = $('#nomemodal').val();
 			var usuario = $('#usuariomodal').val();
 			var email = $('#emailmodal').val();
-			var cidade = $('#cidademodal').val();
-			var bairro = $('#bairromodal').val();
-			var rua = $('#ruamodal').val();
-			var numero = $('#numeromodal').val();
 			
 			$.ajax({
 				type: "PUT",
@@ -270,12 +250,6 @@
 					"nome": nome,
 					"usuario": usuario,
 					"email": email,
-					"endereco":{
-						"cidade": cidade,
-						"bairro": bairro,
-						"rua": rua,
-						"numero": numero
-					}
 				}),
 				success: function (data) {
 					var itens = 
@@ -289,15 +263,16 @@
 					+ ' <button class="btn btn-danger btn-sm" onclick=excluir(' + data.id + ')>Excluir</button>'
 					+ '</td>'
 					+ '</tr>';
-				$('#linha'+data.id).remove();
-				$('#tabela-usuarios').append(itens);
+					$('#linha'+data.id).remove();
+					$('#tabela-usuarios').append(itens);
 					alert("atualizado com sucesso");
 				},
 				error: function (e) {
-					alert(e);
+					alert(e.data);
 				}
 			});
 		}
+		
 	</script>
 </body>
 </html>

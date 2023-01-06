@@ -3,7 +3,6 @@ package br.com.techgold.model;
 import java.util.Objects;
 
 import br.com.techgold.dto.UsuarioDto;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +14,7 @@ import jakarta.persistence.Table;
 public class Usuario {
 
 	@Id
+	//@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
@@ -22,19 +22,18 @@ public class Usuario {
 	private String senha;
 	private String email;
 
-	@Embedded
-	private Endereco endereco;
+	//@Embedded
+	//private Endereco endereco;
 
 	public Usuario() {
 	}
 
-	public Usuario(Long id, String nome, String usuario, String senha, Endereco endereco, String email) {
+	public Usuario(Long id, String nome, String usuario, String senha, String email) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.usuario = usuario;
 		this.senha = senha;
-		this.endereco = endereco;
 		this.email = email;
 	}
 
@@ -43,7 +42,6 @@ public class Usuario {
 		this.nome = dados.nome();
 		this.usuario = dados.usuario();
 		this.senha = dados.senha();
-		this.endereco = dados.endereco();
 		this.email = dados.email();
 	}
 
@@ -79,14 +77,6 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -97,7 +87,7 @@ public class Usuario {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(endereco, id, nome, senha, usuario);
+		return Objects.hash(id, nome, senha, usuario);
 	}
 
 	@Override
@@ -109,7 +99,7 @@ public class Usuario {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return Objects.equals(endereco, other.endereco) && Objects.equals(id, other.id)
+		return Objects.equals(id, other.id)
 				&& Objects.equals(nome, other.nome) && Objects.equals(senha, other.senha)
 				&& Objects.equals(usuario, other.usuario);
 	}

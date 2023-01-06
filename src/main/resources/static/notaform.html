@@ -82,21 +82,29 @@
 		<hr class="bg-danger border-2 border-top border-danger">
 	
 		<div id="form-cliente">
-			<label for="id" class="form-laber">Id Nota</label> 
-			<input type="text" id="id" class="form-control" style="width: 100px;" readonly>
-			<label for="clientesoptions" class="form-laber">Cliente</label> 
-			<select class="form-select" id="clientesoptions" aria-label="Default select example" style="width: 250px;">
-				<option></option>
-			</select>
-			<label for="nome" class="form-laber">Nome</label> 
+			
+			<div class="row">
+				<div class="col-md-1">	
+					<label for="id" class="form-laber">Id Nota</label> 
+					<input type="text" id="id" class="form-control" style="width: 60px;" readonly>
+				</div>
+				<div class="col-md-3">	
+					<label for="clientesoptions" class="form-laber">Cliente</label> 
+					<select class="form-select" id="clientesoptions" aria-label="Default select example" style="width: 250px;">
+						<option></option>
+					</select>
+				</div>
+			</div>
+			
+			<label for="nome" class="form-laber mt-2">Nome</label> 
 			<input type="text" id="nome" class="form-control" style="width: 400px;">
-			<label for="conteudo" class="form-laber">Conteúdo</label> 
+			<label for="conteudo" class="form-laber mt-2">Conteúdo</label> 
 			<input type="text" id="conteudo" class="form-control" style="width: 400px;">
-			<label for="senha" class="form-laber">Senha</label>
+			<label for="senha" class="form-laber mt-2">Senha</label>
 			<button onclick="changeviewer()" style="border: none;">
 				<img src="./assets/img/olho.png" style="height: 15px;">
 			</button>
-			<input type="password" id="senha" class="form-control" minlength="6" maxlength="50"
+			<input type="password" id="senha" class="form-control mt-2" minlength="6" maxlength="50"
 				onKeyUp="verificaForcaSenha();" style="width: 400px;">
 			<span id="password-status"></span><br />
 			<label for="observacao" class="form-laber">Observação</label> 
@@ -229,12 +237,14 @@
 	</script>
 	<script>
 		function limpar(){
-			id = $('#id').val("");
-			nome = $('#nome').val("");
-			conteudo = $('#conteudo').val("");
-			senha = $('#senha').val("");
-			observacao = $('#observacao').val("");
-			idCliente = $('#idCliente').val("");
+			$('#id').val("");
+			$('#clientesoptions').val('');
+			$('#nome').val("");
+			$('#conteudo').val("");
+			$('#senha').val("");
+			$('#observacao').val("");
+			$('#idCliente').val("");
+			$('#password-status').text('');
 		}
 	</script>
 </body>
