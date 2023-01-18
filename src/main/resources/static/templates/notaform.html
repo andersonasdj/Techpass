@@ -5,16 +5,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-	<title>TechPass - Clientes</title>
+	<title>TechPass - Notas</title>
 </head>
 
 <body>
 	<div class="container">
 		<br />
-				<!-- ################### BARRA DE NAVEGAÇÃO  -->
+		<!-- ################### BARRA DE NAVEGAÇÃO  -->
 		<nav class="navbar navbar-expand-lg bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="/techpass/home"><img src="./assets/img/key.png" style="height: 18px;"> TechPass</a>
+				<a class="navbar-brand" href="/techpass/home"><img src="./assets/img/key.png" style="height: 18px;">
+					TechPass</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
 					aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +26,7 @@
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="/techpass/home">Início</a>
 						</li>
-						
+
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
 								aria-expanded="false">
@@ -72,31 +73,65 @@
 							<a class="nav-link" href="#">Links</a>
 						</li>
 					</ul>
-					<form class="d-flex" role="search">
-						<input class="form-control me-2" type="search" placeholder="Search" aria-label="Buscar">
-						<button class="btn btn-outline-success" type="submit">Buscar</button>
+					<!--
+						<ul class="navbar-nav me-auto mb-3 mb-lg-0">
+							<li class="nav-item">
+								<form class="d-flex" role="search">
+									<input class="form-control me-2" type="search" placeholder="Search" aria-label="Buscar">
+									<button class="btn btn-outline-success" type="submit">Buscar </button>
+								</form>
+							</li>
+						</ul>
+					-->
+					<ul class="navbar-nav mb-3 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link" id="perfil" href="#"></a>
+						</li>
 						<a href="/techpass/logout">
-							<img src="./assets/img/logout.png" style="width: 95px; border: none;" class="img-thumbnail" alt="...">
+							<img src="./assets/img/logout.png" style="width: 60px; border: none;">
 						</a>
-					</form>
+					</ul>
 				</div>
 			</div>
 		</nav>
-	<!-- ################### BARRA DE NAVEGAÇÃO  -->
-	
-	<hr class="bg-danger border-2 border-top border-danger">
-	
+		<!-- ################### BARRA DE NAVEGAÇÃO  -->
+		<hr class="bg-danger border-2 border-top border-danger">
+
 		<div id="form-cliente">
-			<label for="nome" class="form-laber">Nome</label> 
+
+			<div class="row">
+				<div class="col-md-1">
+					<label for="id" class="form-laber">Id Nota</label>
+					<input type="text" id="id" class="form-control" style="width: 60px;" readonly>
+				</div>
+				<div class="col-md-3">
+					<label for="clientesoptions" class="form-laber">Cliente</label>
+					<select class="form-select" id="clientesoptions" aria-label="Default select example"
+						style="width: 250px;">
+						<option></option>
+					</select>
+				</div>
+			</div>
+
+			<label for="nome" class="form-laber mt-2">Nome</label>
 			<input type="text" id="nome" class="form-control" style="width: 400px;">
-			<label for="endereco" class="form-laber">Endereço</label> 
-			<input type="text" id="endereco" class="form-control" style="width: 400px;">
+			<label for="conteudo" class="form-laber mt-2">Conteúdo</label>
+			<input type="text" id="conteudo" class="form-control" style="width: 400px;">
+			<label for="senha" class="form-laber mt-2">Senha</label>
+			<button onclick="changeviewer()" style="border: none;">
+				<img src="./assets/img/olho.png" style="height: 15px;">
+			</button>
+			<input type="password" id="senha" class="form-control mt-2" minlength="6" maxlength="50"
+				onKeyUp="verificaForcaSenha();" style="width: 400px;">
+			<span id="password-status"></span><br />
+			<label for="observacao" class="form-laber">Observação</label>
+			<input type="text" id="observacao" class="form-control" style="width: 400px;">
 		</div>
-		<br/>
+		<br />
 		<button class="btn btn-success" onclick="salvar()">Salvar</button>
-		
-		
-		<br/><br/>
+		<button class="btn btn-secondary" onclick="limpar()">Limpar</button>
+
+		<br /><br />
 		<footer class="bg-light text-center text-white">
 			<!-- Grid container -->
 			<div class="container p-4 pb-0">
@@ -126,6 +161,7 @@
 			</div>
 			<!-- Copyright -->
 		</footer>
+
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.3.js"
 		integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous">
@@ -137,34 +173,95 @@
 		integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">
 		</script>
 	<script>
-		function salvar(){
-			var idcliente = $('#idcliente').val();
+		function verificaForcaSenha() {
+			var numeros = /([0-9])/;
+			var alfabeto = /([a-zA-Z])/;
+			var chEspeciais = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
+
+			if ($('#senha').val().length < 8) {
+				$('#password-status').html("<span style='color:red'>Fraco, insira no mínimo 8 caracteres</span>");
+			} else {
+				if ($('#senha').val().match(numeros) && $('#senha').val().match(alfabeto) && $('#senha').val().match(chEspeciais)) {
+					$('#password-status').html("<span style='color:green'><b>Forte</b></span>");
+				} else {
+					$('#password-status').html("<span style='color:orange'>Médio, insira um caracter especial</span>");
+				}
+			}
+		}
+		function changeviewer() {
+			var tipo = $('#senha').attr("type").toString();
+			if (tipo == 'password' && tipo != '') {
+				$('#senha').attr("type", 'text');
+			} else {
+				$('#senha').attr("type", 'password');
+			}
+		}
+	</script>
+	<script>
+		var clientesOptions = $('#clientesoptions');
+
+		$.ajax({
+			type: "GET",
+			contentType: "application/json",
+			url: "/techpass/cliente",
+			success: function (data) {
+				var itens = data.map(i =>
+					'<option id=linha' + i.id + ' value=' + i.id + '>' + i.nome + '</option>'
+				);
+				clientesOptions.append(itens);
+			},
+			error: function (e) {
+				alert(e);
+			}
+		});
+
+	</script>
+	<script>
+		function salvar() {
+			var id = $('#id').val();
 			var nome = $('#nome').val();
-			var endereco = $('#endereco').val();
+			var conteudo = $('#conteudo').val();
+			var senha = $('#senha').val();
+			var observacao = $('#observacao').val();
+			var idCliente = $('#clientesoptions').val();
+
 			$.ajax({
 				type: "POST",
 				contentType: "application/json",
-				url: "/techpass/cliente",
+				url: "/techpass/nota",
 				data: JSON.stringify(
 					{
-						"id": idcliente,
+						"id": id,
 						"nome": nome,
-						"endereco": endereco
+						"conteudo": conteudo,
+						"senha": senha,
+						"observacao": observacao,
+						"cliente": {
+							"id": idCliente
+						}
 					}
 				),
-				success : function(data){
-					
-					if($('#idcliente').val() != data.id){
-						var idincluir = $('#form-cliente');
-						idincluir.append('<laber class="form-label" for="idcliente">Id</label>'
-						+' <input type="text" id="idcliente" value="'+ data.id +'" class="form-control" style="width: 100px;" readonly>');
-					}
-					alert("salvo com sucesso!");
+				success: function (response) {
+					$('#id').val(response.id);
+					alert("Nota salva com sucesso!");
+
 				},
-				error: function(e){
+				error: function (e) {
 					alert(e);
 				}
 			});
+		}
+	</script>
+	<script>
+		function limpar() {
+			$('#id').val("");
+			$('#clientesoptions').val('');
+			$('#nome').val("");
+			$('#conteudo').val("");
+			$('#senha').val("");
+			$('#observacao').val("");
+			$('#idCliente').val("");
+			$('#password-status').text('');
 		}
 	</script>
 </body>

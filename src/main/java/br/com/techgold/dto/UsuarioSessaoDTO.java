@@ -1,10 +1,8 @@
 package br.com.techgold.dto;
 
-public record UsuarioDto(
-		Long id,
+public record UsuarioSessaoDTO(
 		String name,
 		String username,
-		String password,
 		String email) {
 
 }

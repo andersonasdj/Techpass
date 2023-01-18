@@ -12,31 +12,31 @@ public class SistemaController {
 	}
 	@GetMapping("/home")
 	public String homePage() {
-		return "home.html";
+		return "templates/home.html";
 	}
 	@GetMapping("/listarclientes")
 	public String listarClientes() {
-		return "clientes.html";
+		return "templates/clientes.html";
 	}
 	@GetMapping("/listarnotas")
 	public String listarNotas() {
-		return "notas.html";
+		return "templates/notas.html";
 	}
 	@GetMapping("/clienteform")
 	public String clienteForm() {
-		return "clienteform.html";
+		return "templates/clienteform.html";
 	}
 	@GetMapping("/listarusuarios")
 	public String listarUsuarios() {
-		return "usuarios.html";
+		return "templates/usuarios.html";
 	}
 	@GetMapping("/usuarioform")
 	public String usuarioForm() {
-		return "usuarioform.html";
+		return "templates/usuarioform.html";
 	}
 	@GetMapping("/notaform")
 	public String notaForm() {
-		return "notaform.html";
+		return "templates/notaform.html";
 	}
 	
 }

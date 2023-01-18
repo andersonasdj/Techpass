@@ -63,28 +63,6 @@
 		</div>
 	</div>
 </div>
-<script>
-	
-		function logar(){
-			var username = $('#username').val();
-			var password = $('#password').val();
 
-			$.ajax({
-				type: "POST",
-				contentType: "application/json",
-				url: "/techpass/login",
-				data: JSON.stringify(username),
-				success : function(data){
-					
-					alert("Usuario Logado!" + data.username);
-				},
-				error: function(e){
-					alert(e);
-					alert(username);
-				}
-			});
-		}
-	
-</script>
 </body>
 </html>
