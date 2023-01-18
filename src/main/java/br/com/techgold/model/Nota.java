@@ -3,14 +3,14 @@ package br.com.techgold.model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "notas")

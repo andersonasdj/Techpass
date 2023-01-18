@@ -23,6 +23,7 @@ public class UsuarioController {
 	@Autowired
 	UsuarioRepository repository;
 	
+	
 	@GetMapping
 	public List<Usuario> listaUsuarios(){
 		return repository.findAll();
@@ -35,8 +36,13 @@ public class UsuarioController {
 	}
 	
 	@PutMapping
-	public Usuario atualizar(@RequestBody Usuario usuario) {
-		return repository.saveAndFlush(usuario);
+	public Usuario atualizar(@RequestBody Usuario user) {
+		if(repository.existsById(user.getId())) {
+			String password = repository.findById(user.getId()).get().getPassword();
+			user.setPassword(password);
+		}
+		
+		return repository.saveAndFlush(user);
 	}
 	
 	@PostMapping

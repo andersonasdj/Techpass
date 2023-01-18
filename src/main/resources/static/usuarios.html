@@ -73,6 +73,9 @@
 					<form class="d-flex" role="search">
 						<input class="form-control me-2" type="search" placeholder="Search" aria-label="Buscar">
 						<button class="btn btn-outline-success" type="submit">Buscar</button>
+						<a href="/techpass/logout">
+							<img src="./assets/img/logout.png" style="width: 95px; border: none;" class="img-thumbnail" alt="...">
+						</a>
 					</form>
 				</div>
 			</div>
@@ -175,8 +178,8 @@
 			success: function (data) {
 				var itens = data.map(i =>
 					'<tr id=linha' + i.id + '>'
-					+ '<td>' + i.nome + '</td>'
-					+ '<td>' + i.usuario + '</td>'
+					+ '<td>' + i.name + '</td>'
+					+ '<td>' + i.username + '</td>'
 					+ '<td>' + i.email + '</td>'
 					+ '<td>'
 					+ '<img src="./assets/img/key-change.png" style="height: 18px;"> '
@@ -225,8 +228,8 @@
 					$('#usuariomodal').val("");
 					$('#emailmodal').val("");
 					$('#idmodal').val(data.id);
-					$('#nomemodal').val(data.nome);
-					$('#usuariomodal').val(data.usuario);
+					$('#nomemodal').val(data.name);
+					$('#usuariomodal').val(data.username);
 					$('#emailmodal').val(data.email);
 				},
 				error: function (e) {
@@ -237,8 +240,8 @@
 		
 		function atualiza(){
 			var id = $('#idmodal').val();
-			var nome = $('#nomemodal').val();
-			var usuario = $('#usuariomodal').val();
+			var name = $('#nomemodal').val();
+			var username = $('#usuariomodal').val();
 			var email = $('#emailmodal').val();
 			
 			$.ajax({
@@ -247,15 +250,15 @@
 				url: "/techpass/usuario",
 				data: JSON.stringify({
 					"id": id,
-					"nome": nome,
-					"usuario": usuario,
+					"name": name,
+					"username": username,
 					"email": email,
 				}),
 				success: function (data) {
 					var itens = 
 					'<tr id=linha' + data.id + '>'
-					+ '<td>' + data.nome + '</td>'
-					+ '<td>' + data.usuario + '</td>'
+					+ '<td>' + data.name + '</td>'
+					+ '<td>' + data.username + '</td>'
 					+ '<td>' + data.email + '</td>'
 					+ '<td>'
 					+ '<img src="./assets/img/key-change.png" style="height: 18px;"> '

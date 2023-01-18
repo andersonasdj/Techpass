@@ -1,4 +1,5 @@
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -75,6 +76,10 @@
 					<form class="d-flex" role="search">
 						<input class="form-control me-2" type="search" placeholder="Search" aria-label="Buscar">
 						<button class="btn btn-outline-success" type="submit">Buscar</button>
+						<a href="/techpass/logout">
+							<img src="./assets/img/logout.png" style="width: 95px; border: none;" class="img-thumbnail"
+								alt="...">
+						</a>
 					</form>
 				</div>
 			</div>
@@ -84,17 +89,17 @@
 		<hr class="bg-danger border-2 border-top border-danger">
 
 		<div id="form-usuario">
-			<label for="nome" class="form-laber">Nome</label>
-			<input type="text" id="nome" class="form-control" style="width: 400px;">
+			<label for="name" class="form-laber">Nome</label>
+			<input type="text" id="name" class="form-control" style="width: 400px;">
 
-			<label for="usuario" class="form-laber mt-2">Usuário</label>
-			<input type="text" id="usuario" class="form-control" style="width: 400px;">
+			<label for="username" class="form-laber mt-2">Usuário</label>
+			<input type="text" id="username" class="form-control" style="width: 400px;">
 
-			<label for="senha" class="form-laber mt-2">Senha</label>
+			<label for="password" class="form-laber mt-2">Senha</label>
 			<button onclick="changeviewer()" style="border: none;">
 				<img src="./assets/img/olho.png" style="height: 15px;">
 			</button>
-			<input type="password" id="senha" class="form-control mt-2" minlength="6" maxlength="50"
+			<input type="password" id="password" class="form-control mt-2" minlength="6" maxlength="50"
 				onKeyUp="verificaForcaSenha();" style="width: 300px;">
 			<span id="password-status"></span><br />
 
@@ -102,7 +107,7 @@
 			<input type="text" id="email" class="form-control" style="width: 400px;">
 
 		</div>
-		<br/>
+		<br />
 		<button class="btn btn-success" onclick="salvar()">Salvar</button>
 
 		<br /><br />
@@ -147,11 +152,11 @@
 		</script>
 	<script>
 		function changeviewer() {
-			var tipo = $('#senha').attr("type").toString();
+			var tipo = $('#password').attr("type").toString();
 			if (tipo == 'password' && tipo != '') {
-				$('#senha').attr("type", 'text');
+				$('#password').attr("type", 'text');
 			} else {
-				$('#senha').attr("type", 'password');
+				$('#password').attr("type", 'password');
 			}
 		}
 	</script>
@@ -161,10 +166,10 @@
 			var alfabeto = /([a-zA-Z])/;
 			var chEspeciais = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
 
-			if ($('#senha').val().length < 8) {
+			if ($('#password').val().length < 8) {
 				$('#password-status').html("<span style='color:red'>Fraco, insira no mínimo 8 caracteres</span>");
 			} else {
-				if ($('#senha').val().match(numeros) && $('#senha').val().match(alfabeto) && $('#senha').val().match(chEspeciais)) {
+				if ($('#password').val().match(numeros) && $('#senha').val().match(alfabeto) && $('#senha').val().match(chEspeciais)) {
 					$('#password-status').html("<span style='color:green'><b>Forte</b></span>");
 				} else {
 					$('#password-status').html("<span style='color:orange'>Médio, insira um caracter especial</span>");
@@ -175,9 +180,9 @@
 	<script>
 		function salvar() {
 			var idusuario = $('#idusuario').val();
-			var nome = $('#nome').val();
-			var usuario = $('#usuario').val();
-			var senha = $('#senha').val();
+			var name = $('#name').val();
+			var username = $('#username').val();
+			var password = $('#password').val();
 			var email = $('#email').val();
 			$.ajax({
 				type: "POST",
@@ -185,9 +190,9 @@
 				url: "/techpass/usuario",
 				data: JSON.stringify({
 					"id": idusuario,
-					"nome": nome,
-					"usuario": usuario,
-					"senha": senha,
+					"name": name,
+					"username": username,
+					"password": password,
 					"email": email,
 				}),
 				success: function (data) {

@@ -8,7 +8,7 @@ public class SistemaController {
 	
 	@GetMapping("/login")
 	public String login() {
-		return "login.html";
+		return "templates/login.html";
 	}
 	@GetMapping("/home")
 	public String homePage() {

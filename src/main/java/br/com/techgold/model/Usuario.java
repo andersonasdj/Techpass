@@ -1,47 +1,46 @@
 package br.com.techgold.model;
 
-import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.techgold.dto.UsuarioDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "usuarios")
+//@Table(name = "usuarios")
 public class Usuario {
 
 	@Id
-	//@NotNull
+	// @NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
-	private String usuario;
-	private String senha;
+	private String name;
+	private String username;
+	private String password;
 	private String email;
 
-	//@Embedded
-	//private Endereco endereco;
+	// @Embedded
+	// private Endereco endereco;
 
 	public Usuario() {
 	}
 
-	public Usuario(Long id, String nome, String usuario, String senha, String email) {
-		super();
+	public Usuario(Long id, String name, String username, String password, String email) {
 		this.id = id;
-		this.nome = nome;
-		this.usuario = usuario;
-		this.senha = senha;
+		this.name = name;
+		this.username = username;
+		this.password = password;
 		this.email = email;
 	}
 
 	public Usuario(UsuarioDto dados) {
 		this.id = dados.id();
-		this.nome = dados.nome();
-		this.usuario = dados.usuario();
-		this.senha = dados.senha();
+		this.name = dados.name();
+		this.username = dados.username();
+		this.password = passwordEncoder().encode(dados.password());
 		this.email = dados.email();
 	}
 
@@ -53,28 +52,28 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getUsuario() {
-		return usuario;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getSenha() {
-		return senha;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getEmail() {
@@ -85,23 +84,8 @@ public class Usuario {
 		this.email = email;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, nome, senha, usuario);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Usuario other = (Usuario) obj;
-		return Objects.equals(id, other.id)
-				&& Objects.equals(nome, other.nome) && Objects.equals(senha, other.senha)
-				&& Objects.equals(usuario, other.usuario);
+	private BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 }
