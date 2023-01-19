@@ -23,7 +23,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		System.out.println(auth);
 		auth.userDetailsService(userDatailsService).passwordEncoder(passwordEncoder());
 	}
 	
@@ -53,8 +52,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	public void configure(WebSecurity web) {
 		web.ignoring().antMatchers("/assets/**");
 	}
-	
-	
-
 
 }

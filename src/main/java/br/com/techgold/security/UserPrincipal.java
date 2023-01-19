@@ -19,7 +19,6 @@ public class UserPrincipal implements UserDetails {
 	}
 	
 	public static UserPrincipal create(Usuario user) {
-		
 		return new UserPrincipal(user);
 	}
 	
@@ -58,7 +57,5 @@ public class UserPrincipal implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-
-	
 	
 }
