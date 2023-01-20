@@ -14,8 +14,7 @@
 		<!-- ################### BARRA DE NAVEGAÇÃO  -->
 		<nav class="navbar navbar-expand-lg bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="/techpass/home"><img src="./assets/img/key.png" style="height: 18px;">
-					TechPass</a>
+				<a class="navbar-brand" href="/techpass/home"><img src="./assets/img/key.png" style="height: 18px;"> TechPass</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
 					aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +25,7 @@
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="/techpass/home">Início</a>
 						</li>
-
+						
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
 								aria-expanded="false">
@@ -73,29 +72,22 @@
 							<a class="nav-link" href="#">Links</a>
 						</li>
 					</ul>
-					<!--
-						<ul class="navbar-nav me-auto mb-3 mb-lg-0">
-							<li class="nav-item">
-								<form class="d-flex" role="search">
-									<input class="form-control me-2" type="search" placeholder="Search" aria-label="Buscar">
-									<button class="btn btn-outline-success" type="submit">Buscar </button>
-								</form>
-							</li>
-						</ul>
-					-->
 					<ul class="navbar-nav mb-3 mb-lg-0">
-						<li class="nav-item">
-							<a class="nav-link" id="perfil" href="#"></a>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" id="perfil" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Perfil</a></li>
+								<li><a class="dropdown-item" href="/techpass/backup">Backup</a></li>
+							</ul>
 						</li>
-						<a href="/techpass/logout">
-							<img src="./assets/img/logout.png" style="width: 60px; border: none;">
-						</a>
+							<a href="/techpass/logout">
+								<img src="./assets/img/logout.png" style="width: 60px; border: none;" >
+							</a>
 					</ul>
 				</div>
 			</div>
 		</nav>
 		<!-- ################### BARRA DE NAVEGAÇÃO  -->
-
 		<hr class="bg-danger border-2 border-top border-danger">
 
 		<div id="form-usuario">
@@ -105,11 +97,11 @@
 			<label for="username" class="form-laber mt-2">Usuário</label>
 			<input type="text" id="username" class="form-control" style="width: 400px;">
 
-			<label for="password" class="form-laber mt-2">Senha</label>
-			<button onclick="changeviewer()" style="border: none;">
+			<label for="senha" class="form-laber mt-2">Senha</label>
+			<button onclick="changeviewer()" style="border: none; background: none;">
 				<img src="./assets/img/olho.png" style="height: 15px;">
 			</button>
-			<input type="password" id="password" class="form-control mt-2" minlength="6" maxlength="50"
+			<input type="password" id="senha" class="form-control mt-2" minlength="6" maxlength="50"
 				onKeyUp="verificaForcaSenha();" style="width: 300px;">
 			<span id="password-status"></span><br />
 
@@ -161,25 +153,16 @@
 		integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">
 		</script>
 	<script>
-		function changeviewer() {
-			var tipo = $('#password').attr("type").toString();
-			if (tipo == 'password' && tipo != '') {
-				$('#password').attr("type", 'text');
-			} else {
-				$('#password').attr("type", 'password');
-			}
-		}
-	</script>
-	<script>
 		function verificaForcaSenha() {
+			
 			var numeros = /([0-9])/;
 			var alfabeto = /([a-zA-Z])/;
 			var chEspeciais = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
 
-			if ($('#password').val().length < 8) {
+			if ($('#senha').val().length < 8) {
 				$('#password-status').html("<span style='color:red'>Fraco, insira no mínimo 8 caracteres</span>");
 			} else {
-				if ($('#password').val().match(numeros) && $('#senha').val().match(alfabeto) && $('#senha').val().match(chEspeciais)) {
+				if ($('#senha').val().match(numeros) && $('#senha').val().match(alfabeto) && $('#senha').val().match(chEspeciais)) {
 					$('#password-status').html("<span style='color:green'><b>Forte</b></span>");
 				} else {
 					$('#password-status').html("<span style='color:orange'>Médio, insira um caracter especial</span>");
@@ -187,12 +170,33 @@
 			}
 		}
 	</script>
+	
 	<script>
+		$.ajax({
+			type: "GET",
+			contentType: "application/json",
+			url: "/techpass/usuario/perfil",
+			success: function (data) {
+				$('#perfil').append("<b>"+data+"</b>");
+			},
+			error: function (e) {
+				alert(e);
+			}
+		});
+		function changeviewer() {
+			var tipo = $('#senha').attr("type").toString();
+			if (tipo == 'password' && tipo != '') {
+				$('#senha').attr("type", 'text');
+			} else {
+				$('#senha').attr("type", 'password');
+			}
+		}
+		
 		function salvar() {
 			var idusuario = $('#idusuario').val();
 			var name = $('#name').val();
 			var username = $('#username').val();
-			var password = $('#password').val();
+			var password = $('#senha').val();
 			var email = $('#email').val();
 			$.ajax({
 				type: "POST",

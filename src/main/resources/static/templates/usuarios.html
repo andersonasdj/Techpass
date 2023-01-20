@@ -73,19 +73,14 @@
 							<a class="nav-link" href="#">Links</a>
 						</li>
 					</ul>
-					<!--
-						<ul class="navbar-nav me-auto mb-3 mb-lg-0">
-							<li class="nav-item">
-								<form class="d-flex" role="search">
-									<input class="form-control me-2" type="search" placeholder="Search" aria-label="Buscar">
-									<button class="btn btn-outline-success" type="submit">Buscar </button>
-								</form>
-							</li>
-						</ul>
-					-->
 					<ul class="navbar-nav mb-3 mb-lg-0">
-						<li class="nav-item">
-							<a class="nav-link" id="perfil" href="#"></a>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" id="perfil" href="#" role="button"
+								data-bs-toggle="dropdown" aria-expanded="false"></a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Perfil</a></li>
+								<li><a class="dropdown-item" href="/techpass/backup">Backup</a></li>
+							</ul>
 						</li>
 						<a href="/techpass/logout">
 							<img src="./assets/img/logout.png" style="width: 60px; border: none;">
@@ -174,6 +169,33 @@
 				</div>
 			</div>
 		</div>
+		<!-- Modal Senha -->
+		<div class="modal fade" id="exampleModalSenha" tabindex="-1" aria-labelledby="exampleModalLabelSenha"
+			aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabelSenha">Atualização de senha - <span id="nomeUsuarioModal"></span></h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<label class="form-label mt-2" for="idmodalsenha">ID</label>
+						<input type="text" id="idmodalsenha" class="form-control" style="width: 70px;" readonly>
+						<label class="form-label mt-2" for="senha">Senha</label>
+						<button onclick="changeviewer()" style="border: none; background: none;">
+							<img src="./assets/img/olho.png" style="height: 15px">
+						</button>
+						<input type="password" id="senha" class="form-control mt-2" minlength="8" maxlength="50"
+							onKeyUp="verificaForcaSenha();" style="width: 300px;">
+						<span id="password-status"></span><br />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+						<button id="btnSave" type="button" class="btn btn-primary" onclick="changePassword()">Salvar</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.6.3.js"
 		integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous">
@@ -188,15 +210,29 @@
 		$.ajax({
 			type: "GET",
 			contentType: "application/json",
+			url: "/techpass/usuario/perfil",
+			success: function (data) {
+				$('#perfil').append("<b>" + data + "</b>");
+			},
+			error: function (e) {
+				alert(e);
+			}
+		});
+		$.ajax({
+			type: "GET",
+			contentType: "application/json",
 			url: "/techpass/usuario",
 			success: function (data) {
 				var itens = data.map(i =>
 					'<tr id=linha' + i.id + '>'
-					+ '<td>' + i.name + '</td>'
+					+ '<td id=name' + i.id +'>' + i.name + '</td>'
 					+ '<td>' + i.username + '</td>'
 					+ '<td>' + i.email + '</td>'
 					+ '<td>'
-					+ '<img src="./assets/img/key-change.png" style="height: 18px;"> '
+					+ '<button data-bs-toggle="modal" data-bs-target="#exampleModalSenha" onclick="preencheModalPassword(' + i.id +')" style="border: none; background: none;">'
+					+ '<img src="./assets/img/key-change.png" style="height: 18px">'
+					+ '</button>'
+
 					+ ' <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick=editar(' + i.id + ')>Editar</button>'
 					+ ' <button class="btn btn-danger btn-sm" onclick=excluir(' + i.id + ')>Excluir</button>'
 					+ '</td>'
@@ -208,8 +244,29 @@
 				alert(e);
 			}
 		});
-	</script>
-	<script>
+		function verificaForcaSenha() {
+			var numeros = /([0-9])/;
+			var alfabeto = /([a-zA-Z])/;
+			var chEspeciais = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
+
+			if ($('#senha').val().length < 8) {
+				$('#password-status').html("<span style='color:red'>Fraco, insira no mínimo 8 caracteres</span>");
+			} else {
+				if ($('#senha').val().match(numeros) && $('#senha').val().match(alfabeto) && $('#senha').val().match(chEspeciais)) {
+					$('#password-status').html("<span style='color:green'><b>Forte</b></span>");
+				} else {
+					$('#password-status').html("<span style='color:orange'>Médio, insira um caracter especial</span>");
+				}
+			}
+		}
+		function changeviewer() {
+			var tipo = $('#senha').attr("type").toString();
+			if (tipo == 'password' && tipo != '') {
+				$('#senha').attr("type", 'text');
+			} else {
+				$('#senha').attr("type", 'password');
+			}
+		}
 		function excluir(id) {
 			if (confirm("Tem certeza que deseja excluir?") == true) {
 				var t = "#linha" + id;
@@ -229,8 +286,6 @@
 				});
 			}
 		}
-	</script>
-	<script>
 		function editar(id) {
 			$.ajax({
 				type: "GET",
@@ -251,13 +306,49 @@
 				}
 			});
 		}
-
+		function preencheModalPassword(id){
+			$('#idmodalsenha').val("");
+			$('#senha').val("");
+			$('#nomeUsuarioModal').val("");
+			$('#idmodalsenha').val(id);
+			$('#nomeUsuarioModal').text($('#name'+id).text());
+			$('#btnSave').removeAttr('disabled');;
+			$('#password-status').text('');
+		}
+		
+		function changePassword(id) {
+			var idModalSenha = $('#idmodalsenha').val();
+			var senhaModal = $('#senha').val();
+			
+			if(senhaModal.length >= 8){
+				$.ajax({
+					type: "PUT",
+					contentType: "application/json",
+					url: "/techpass/usuario/senha",
+					data: JSON.stringify({
+						"id": idModalSenha,
+						"password": senhaModal
+					}),
+					success: function (data) {
+						$('#btnSave').attr("disabled","disabled");
+						$('#password-status').text('');
+						$('#password-status').append("<b style='color: rgb(38, 162, 105);'>"+data+"</b>");
+					},
+					error: function (e) {
+						alert(e);
+					}
+				});
+			}else{
+				$('#password-status').text('');
+				$('#password-status').append("<b style='color: red;'>Senha com menos de 8 caracteres</b>");
+			}
+			
+		}
 		function atualiza() {
 			var id = $('#idmodal').val();
 			var name = $('#nomemodal').val();
 			var username = $('#usuariomodal').val();
 			var email = $('#emailmodal').val();
-
 			$.ajax({
 				type: "PUT",
 				contentType: "application/json",
@@ -275,6 +366,9 @@
 						+ '<td>' + data.username + '</td>'
 						+ '<td>' + data.email + '</td>'
 						+ '<td>'
+						+ '<button data-bs-toggle="modal" data-bs-target="#exampleModalSenha" onclick="preencheModalPassword(' + i.id +')" style="border: none; background: none;">'
+						+ '<img src="./assets/img/key-change.png" style="height: 18px">'
+						+ '</button>'
 						+ '<img src="./assets/img/key-change.png" style="height: 18px;"> '
 						+ ' <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick=editar(' + data.id + ')>Editar</button>'
 						+ ' <button class="btn btn-danger btn-sm" onclick=excluir(' + data.id + ')>Excluir</button>'
@@ -289,7 +383,6 @@
 				}
 			});
 		}
-
 	</script>
 </body>
 

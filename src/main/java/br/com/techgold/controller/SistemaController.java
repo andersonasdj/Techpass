@@ -38,5 +38,9 @@ public class SistemaController {
 	public String notaForm() {
 		return "templates/notaform.html";
 	}
+	@GetMapping("/backup")
+	public String backup() {
+		return "templates/backup.html";
+	}
 	
 }

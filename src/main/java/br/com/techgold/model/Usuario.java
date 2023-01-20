@@ -87,5 +87,8 @@ public class Usuario {
 	private BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
+	
+	public String atualizaPassword(String password) {
+		return passwordEncoder().encode(password);
+	}
 }

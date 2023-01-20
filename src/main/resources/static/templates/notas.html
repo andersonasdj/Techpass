@@ -14,8 +14,7 @@
 		<!-- ################### BARRA DE NAVEGAÇÃO  -->
 		<nav class="navbar navbar-expand-lg bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="/techpass/home"><img src="./assets/img/key.png" style="height: 18px;">
-					TechPass</a>
+				<a class="navbar-brand" href="/techpass/home"><img src="./assets/img/key.png" style="height: 18px;"> TechPass</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
 					aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +25,7 @@
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="/techpass/home">Início</a>
 						</li>
-
+						
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
 								aria-expanded="false">
@@ -73,23 +72,17 @@
 							<a class="nav-link" href="#">Links</a>
 						</li>
 					</ul>
-					<!--
-						<ul class="navbar-nav me-auto mb-3 mb-lg-0">
-							<li class="nav-item">
-								<form class="d-flex" role="search">
-									<input class="form-control me-2" type="search" placeholder="Search" aria-label="Buscar">
-									<button class="btn btn-outline-success" type="submit">Buscar </button>
-								</form>
-							</li>
-						</ul>
-					-->
 					<ul class="navbar-nav mb-3 mb-lg-0">
-						<li class="nav-item">
-							<a class="nav-link" id="perfil" href="#"></a>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" id="perfil" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Perfil</a></li>
+								<li><a class="dropdown-item" href="/techpass/backup">Backup</a></li>
+							</ul>
 						</li>
-						<a href="/techpass/logout">
-							<img src="./assets/img/logout.png" style="width: 60px; border: none;">
-						</a>
+							<a href="/techpass/logout">
+								<img src="./assets/img/logout.png" style="width: 60px; border: none;" >
+							</a>
 					</ul>
 				</div>
 			</div>
@@ -181,7 +174,7 @@
 									onKeyUp="verificaForcaSenha();" style="width: 320px;">
 							</div>
 							<div class="col-md-2 mt-2">
-								<button onclick="changeviewer()" style="border: none;">
+								<button onclick="changeviewer()" style="border: none; background: none;">
 									<img src="./assets/img/olho.png" style="height: 15px;">
 								</button>
 							</div>
@@ -211,6 +204,17 @@
 		</script>
 
 	<script>
+		$.ajax({
+			type: "GET",
+			contentType: "application/json",
+			url: "/techpass/usuario/perfil",
+			success: function (data) {
+				$('#perfil').append("<b>"+data+"</b>");
+			},
+			error: function (e) {
+				alert(e);
+			}
+		});
 		function changeviewer() {
 			var tipo = $('#senhamodal').attr("type").toString();
 			if (tipo == 'password') {
@@ -219,8 +223,6 @@
 				$('#senhamodal').attr("type", 'password');
 			}
 		}
-	</script>
-	<script>
 		function verificaForcaSenha() {
 			var numeros = /([0-9])/;
 			var alfabeto = /([a-zA-Z])/;
@@ -236,31 +238,6 @@
 				}
 			}
 		}
-	</script>
-	<script>
-		$.ajax({
-			type: "GET",
-			contentType: "application/json",
-			url: "/techpass/nota",
-			success: function (data) {
-				var itens = data.map(i =>
-					'<tr id=linha' + i.id + '>'
-					+ '<td>' + i.cliente.nome + '</td>'
-					+ '<td>' + i.nome + '</td>'
-					+ '<td>'
-					+ ' <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick=editar(' + i.id + ')>Editar</button>'
-					+ ' <button class="btn btn-danger btn-sm" onclick=excluir(' + i.id + ')>Excluir</button>'
-					+ '</td>'
-					+ '</tr>'
-				);
-				$('#tabela-clientes').append(itens);
-			},
-			error: function (e) {
-				alert(e);
-			}
-		});
-	</script>
-	<script>
 		function excluir(id) {
 			if (confirm("Tem certeza que deseja excluir?") == true) {
 				var t = "#linha" + id;
@@ -280,8 +257,6 @@
 				});
 			}
 		}
-	</script>
-	<script>
 		function editar(id) {
 			$.ajax({
 				type: "GET",
@@ -312,7 +287,6 @@
 				}
 			});
 		}
-
 		function atualiza() {
 			var id = $('#idmodal').val();
 			var idCliente = $('#idmodalcliente').val();
@@ -338,7 +312,6 @@
 					}
 				),
 				success: function (data) {
-
 					var itens =
 						'<tr id=linha' + data.id + '>'
 						+ '<td>' + data.cliente.nome + '</td>'
@@ -357,6 +330,29 @@
 				}
 			});
 		}
+	</script>
+	<script>
+		$.ajax({
+			type: "GET",
+			contentType: "application/json",
+			url: "/techpass/nota",
+			success: function (data) {
+				var itens = data.map(i =>
+					'<tr id=linha' + i.id + '>'
+					+ '<td>' + i.cliente.nome + '</td>'
+					+ '<td>' + i.nome + '</td>'
+					+ '<td>'
+					+ ' <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick=editar(' + i.id + ')>Editar</button>'
+					+ ' <button class="btn btn-danger btn-sm" onclick=excluir(' + i.id + ')>Excluir</button>'
+					+ '</td>'
+					+ '</tr>'
+				);
+				$('#tabela-clientes').append(itens);
+			},
+			error: function (e) {
+				alert(e);
+			}
+		});
 	</script>
 </body>
 

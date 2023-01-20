@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.techgold.dto.UsuarioDto;
 import br.com.techgold.model.Usuario;
+import br.com.techgold.model.UsuarioDtoSenha;
 import br.com.techgold.repository.UsuarioRepository;
 
 @RestController
@@ -40,7 +41,6 @@ public class UsuarioController {
 	@GetMapping("id")
 	public Usuario buscarPorId(@RequestParam(name = "id") Long id) {
 		return repository.findById(id).get();
-		
 	}
 	
 	@PutMapping
@@ -49,8 +49,15 @@ public class UsuarioController {
 			String password = repository.findById(user.getId()).get().getPassword();
 			user.setPassword(password);
 		}
-		
 		return repository.saveAndFlush(user);
+	}
+	
+	@PutMapping("senha")
+	public String atualizarSenha(@RequestBody UsuarioDtoSenha dado) {
+		Usuario usuarioUpdate = repository.getById(dado.id());
+		usuarioUpdate.setPassword(usuarioUpdate.atualizaPassword(dado.password()));
+		repository.saveAndFlush(usuarioUpdate);
+		return "Senha Atualizada com sucesso!";
 	}
 	
 	@PostMapping
