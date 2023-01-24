@@ -153,14 +153,16 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<label class="form-label" for="idmodal">ID</label>
+						<label class="form-label mt-2" for="idmodal">ID</label>
 						<input type="text" id="idmodal" class="form-control" readonly>
-						<label class="form-label" for="nomemodal">Nome</label>
+						<label class="form-label mt-2" for="nomemodal">Nome</label>
 						<input type="text" id="nomemodal" class="form-control">
-						<label class="form-label" for="usuariomodal">Usuario</label>
+						<label class="form-label mt-2" for="usuariomodal">Usuario</label>
 						<input type="text" id="usuariomodal" class="form-control">
-						<label class="form-label" for="emailmodal">Email</label>
+						<label class="form-label mt-2" for="emailmodal">Email</label>
 						<input type="text" id="emailmodal" class="form-control">
+						<label class="form-label mt-2" for="rolemodal">Role</label>
+						<input type="text" id="rolemodal" class="form-control">
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -296,10 +298,13 @@
 					$('#nomemodal').val("");
 					$('#usuariomodal').val("");
 					$('#emailmodal').val("");
+					$('#rolemodal').val("");
+					
 					$('#idmodal').val(data.id);
 					$('#nomemodal').val(data.name);
 					$('#usuariomodal').val(data.username);
 					$('#emailmodal').val(data.email);
+					
 				},
 				error: function (e) {
 					alert(e);

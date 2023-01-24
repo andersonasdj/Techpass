@@ -1,13 +1,18 @@
 package br.com.techgold.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.techgold.dto.UsuarioDto;
+import br.com.techgold.security.Roles;
 
 @Entity
 //@Table(name = "usuarios")
@@ -21,6 +26,9 @@ public class Usuario {
 	private String username;
 	private String password;
 	private String email;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Roles> roles;
 
 	// @Embedded
 	// private Endereco endereco;
@@ -28,12 +36,13 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	public Usuario(Long id, String name, String username, String password, String email) {
+	public Usuario(Long id, String name, String username, String password, String email, List<Roles> roles) {
 		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.password = password;
 		this.email = email;
+		this.roles = roles;
 	}
 
 	public Usuario(UsuarioDto dados) {
@@ -82,6 +91,14 @@ public class Usuario {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public List<Roles> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Roles> roles) {
+		this.roles = roles;
 	}
 
 	private BCryptPasswordEncoder passwordEncoder() {

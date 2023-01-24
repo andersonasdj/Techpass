@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,6 +24,7 @@ public class BackupController {
 	@Autowired
 	BancoRepository repository;
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("executar")
 	public String gerar() throws InterruptedException, IOException {
 		
@@ -55,6 +57,7 @@ public class BackupController {
 			return null;
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("configurar")
 	public String configurar(@RequestBody BackupDTO dados) {
 		
@@ -66,6 +69,7 @@ public class BackupController {
 		return "Configurado com sucesso";
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping
 	public String atualizar(@RequestBody BackupDTO dados) {
 		

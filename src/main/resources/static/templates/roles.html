@@ -78,10 +78,6 @@
 							<ul class="dropdown-menu">
 								<li><a class="dropdown-item" href="#">Perfil</a></li>
 								<li><a class="dropdown-item" href="/techpass/backup">Backup</a></li>
-								<li>
-									<hr class="dropdown-divider">
-								</li>
-								<li><a class="dropdown-item" href="/techpass/roleslist">Roles</a></li>
 							</ul>
 						</li>
 							<a href="/techpass/logout">
@@ -93,10 +89,20 @@
 		</nav>
 		<!-- ################### BARRA DE NAVEGAÇÃO  -->
 
-		<hr class="bg-danger border-2 border-top border-danger">
-		<div id="">
-			<img src="./assets/img/login.png" style="width: 180px" class="img-thumbnail" alt="...">
-		</div>
+		<hr class="bg-danger border-2 border-top border-danger mb-4">
+		
+		<table class="table" id="tabela-roles">
+			<thead>
+				<tr>
+					<th scope="col">Nome</th>
+					<th scope="col">Ação</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+				</tr>
+			</tbody>
+		</table>
 
 		<br/><br/>
 		<footer class="bg-light text-center text-white">
@@ -129,6 +135,28 @@
 			<!-- Copyright -->
 		</footer>
 	</div>
+	
+	<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">Edição de Role</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<label class="form-label" for="idRoleModal">ID</label>
+						<input type="text" id="idRoleModal" class="form-control" readonly>
+						<label class="form-label mt-2" for="nomeRoleModal">Nome</label>
+						<input type="text" id="nomeRoleModal" class="form-control">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+						<button type="button" class="btn btn-primary" onclick="atualizar()">Salvar</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 	<script src="https://code.jquery.com/jquery-3.6.3.js"
 		integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous">
@@ -151,6 +179,94 @@
 				alert(e);
 			}
 		});
+		function excluir(id){
+			if (confirm("Tem certeza que deseja excluir?") == true) {
+					var t = "#linha" + id;
+					var remove = $(t).closest('tr');
+					$.ajax({
+						type: "DELETE",
+						contentType: "application/json",
+						url: "/techpass/roles/" + id,
+						success: function () {
+							remove.fadeOut(1500, function () {
+								remove.remove();
+							});
+						},
+						error: function (e) {
+							alert(e);
+						}
+					});
+				}
+		}
+		
+		$.ajax({
+			type: "GET",
+			contentType: "application/json",
+			url: "/techpass/roles",
+			success: function (data) {
+				var itens = data.map(i =>
+					'<tr id=linha' + i.id + '>'
+					+ '<td id=name' + i.id +'>' + i.name + '</td>'
+					+ '<td>'
+					+ ' <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick=editar(' + i.id + ')>Editar</button>'
+					+ ' <button class="btn btn-danger btn-sm" onclick=excluir('+ i.id +')>Excluir</button>'
+					+ '</td>'
+					+ '</tr>'
+				);
+				$('#tabela-roles').append(itens);
+			},
+			error: function (e) {
+				alert(e);
+			}
+		});
+		
+		function editar(id) {
+			$.ajax({
+				type: "GET",
+				contentType: "application/json",
+				url: "/techpass/roles/" + id,
+				success: function (data) {
+					$('#idRoleModal').val("");
+					$('#nomeRoleModal').val("");
+					$('#idRoleModal').val(data.id);
+					$('#nomeRoleModal').val(data.name);
+				},
+				error: function (e) {
+					alert(e);
+				}
+			});
+		}
+		
+		function atualizar() {
+			var id = $('#idRoleModal').val();
+			var name = $('#nomeRoleModal').val();
+			$.ajax({
+				type: "PUT",
+				contentType: "application/json",
+				url: "/techpass/roles",
+				data: JSON.stringify({
+					"id": id,
+					"name": name
+				}),
+				success: function (data) {
+					var itens =
+						'<tr id=linha' + data.id + '>'
+						+ '<td>' + data.name + '</td>'
+						+ '<td>'
+						+ ' <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick=editar(' + data.id + ')>Editar</button>'
+						+ ' <button class="btn btn-danger btn-sm" onclick=excluir(' + data.id + ')>Excluir</button>'
+						+ '</td>'
+						+ '</tr>';
+					$('#linha' + data.id).remove();
+					$('#tabela-roles').append(itens);
+					alert("atualizado com sucesso");
+				},
+				error: function (e) {
+					alert(e.data);
+				}
+			});
+			
+		}
 	</script>
 </body>
 
