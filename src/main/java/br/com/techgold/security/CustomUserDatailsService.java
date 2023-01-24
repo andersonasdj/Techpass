@@ -17,13 +17,10 @@ public class CustomUserDatailsService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
 		Usuario user = repository.findByUsername(username);
-		
 		if(user == null) {
 			throw new Error("User does not exists!");
 		}
 		return UserPrincipal.create(user);
 	}
-
 }

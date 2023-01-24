@@ -92,14 +92,13 @@
 		<hr class="bg-danger border-2 border-top border-danger mb-4">
 		
 		<div id="campobackup">
-
 			<div id="grupoacoes" class=" mb-4" style="text-align: center;">
-				<button type="button" class="btn btn-outline-primary col-md-3 mt-2 mb-4" onclick="gerarbackup()">Gerar backup</button>
-				<button type="button" class="btn btn-outline-secondary col-md-3 mt-2 mb-4">Baixar backup</button>
-				<button type="button" class="btn btn-outline-success col-md-3 mt-2 mb-4">Histórico de backups</button>
+				<button type="button" class="btn btn-outline-primary col-md-3 mt-2 mb-3" onclick="gerarbackup()">Gerar backup</button>
+				<button type="button" class="btn btn-outline-info col-md-3 mt-2 mb-3" onclick="listarConfig()" data-bs-toggle="modal" data-bs-target="#exampleModal" >Configurações</button>
+				<button type="button" class="btn btn-outline-secondary col-md-3 mt-2 mb-3">Baixar backup</button>
+				<button type="button" class="btn btn-outline-success col-md-3 mt-2 mb-3">Histórico de backups</button>
 			</div>
 			<span id="linhabackup"></span>
-
 		</div>
 
 		<br/><br/>
@@ -133,6 +132,38 @@
 			<!-- Copyright -->
 		</footer>
 	</div>
+	
+	<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">Configurações de Backup</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<label class="form-label" for="idBackupModal">ID</label>
+						<input type="text" id="idBackupModal" class="form-control" readonly>
+						<label class="form-label mt-2" for="nomeBancoModal">Nome banco</label>
+						<input type="text" id="nomeBancoModal" class="form-control">
+						<label class="form-label mt-2" for="usuarioBancoModal">Usuario banco</label>
+						<input type="text" id="usuarioBancoModal" class="form-control">
+						<label class="form-label mt-2" for="senhaBancoModal">Senha banco</label>
+						<input type="text" id="senhaBancoModal" class="form-control">
+						<label class="form-label mt-2" for="ipBancoModal">IP do servidor</label>
+						<input type="text" id="ipBancoModal" class="form-control">
+						<label class="form-label mt-2" for="caminhoBancoModal">Caminho exec pg_dump <span style="font-size: 11;"> - Linux (utilize "/") - Windows (utilize "\\")</span></label>
+						<input type="text" id="caminhoBancoModal" class="form-control">
+						<label class="form-label mt-2" for="destinoSaveBancoModal">Destino salvamento <span style="font-size: 11;"> - Linux (utilize "/") - Windows (utilize "\\")</span></label>
+						<input type="text" id="destinoSaveBancoModal" class="form-control">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+						<button type="button" class="btn btn-primary" onclick="atualizar()">Salvar</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 	<script src="https://code.jquery.com/jquery-3.6.3.js"
 		integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous">
@@ -162,7 +193,66 @@
 				contentType: "application/json",
 				url: "/techpass/backup/executar",
 				success: function (data) {
-					$('#linhabackup').append("<b style='color: rgb(38, 162, 105);'>"+data+"</b>");
+					$('#linhabackup').text('');
+					$('#linhabackup').append("<b style='color: blue;'>"+data+"</b>");
+				},
+				error: function (e) {
+					alert(e);
+				}
+			});
+		}
+		function atualizar() {
+			var id = $('#idBackupModal').val();
+			var nome = $('#nomeBancoModal').val();
+			var usuario = $('#usuarioBancoModal').val();
+			var senha = $('#senhaBancoModal').val();
+			var ip = $('#ipBancoModal').val();
+			var caminho = $('#caminhoBancoModal').val();
+			var localsave = $('#destinoSaveBancoModal').val();
+
+			$.ajax({
+				type: "PUT",
+				contentType: "application/json",
+				url: "/techpass/backup",
+				data: JSON.stringify({
+					"id": id,
+					"nome": nome,
+					"usuario": usuario,
+					"senha": senha,
+					"ip": ip,
+					"caminho": caminho,
+					"localsave": localsave
+				}),
+				success: function (data) {
+					alert("atualizado com sucesso");
+				},
+				error: function (e) {
+					alert(e);
+				}
+			});
+		}
+		
+		function listarConfig(){
+			$('#idBackupModal').val("");
+			$('#nomeBancoModal').val("");
+			$('#usuarioBancoModal').val("");
+			$('#senhaBancoModal').val("");
+			$('#ipBancoModal').val("");
+			$('#caminhoBancoModal').val("");
+			$('#destinoSaveBancoModal').val("");
+			
+			$.ajax({
+				type: "GET",
+				contentType: "application/json",
+				url: "/techpass/backup/listar",
+				success: function (data) {
+					$('#idBackupModal').val(data.id);
+					$('#nomeBancoModal').val(data.nome);
+					$('#usuarioBancoModal').val(data.usuario);
+					$('#senhaBancoModal').val(data.senha);
+					$('#ipBancoModal').val(data.ip);
+					$('#caminhoBancoModal').val(data.caminho);
+					$('#destinoSaveBancoModal').val(data.localsave);
 				},
 				error: function (e) {
 					alert(e);
