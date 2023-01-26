@@ -212,7 +212,7 @@
 			$.ajax({
 				type: "DELETE",
 				contentType: "application/json",
-				url: "/techpass/cliente?id=" + id,
+				url: "/techpass/cliente/" + id,
 				success: function () {
 					if (confirm("Tem certeza que deseja excluir?") == true) {
 						remove.fadeOut(1500, function () {
@@ -221,7 +221,7 @@
 					}
 				},
 				error: function (e) {
-					alert(e);
+					alert("Erro: Esse cliente possui notas cadastradas!");
 				}
 			});
 		}
@@ -231,7 +231,7 @@
 			$.ajax({
 				type: "GET",
 				contentType: "application/json",
-				url: "/techpass/cliente/id?id=" + id,
+				url: "/techpass/cliente/" + id,
 				success: function (data) {
 					$('#idmodal').val("");
 					$('#nomemodal').val("");

@@ -276,7 +276,7 @@
 				$.ajax({
 					type: "DELETE",
 					contentType: "application/json",
-					url: "/techpass/usuario?id=" + id,
+					url: "/techpass/usuario/" + id,
 					success: function () {
 						remove.fadeOut(1500, function () {
 							remove.remove();
@@ -292,7 +292,7 @@
 			$.ajax({
 				type: "GET",
 				contentType: "application/json",
-				url: "/techpass/usuario/id?id=" + id,
+				url: "/techpass/usuario/" + id,
 				success: function (data) {
 					$('#idmodal').val("");
 					$('#nomemodal').val("");

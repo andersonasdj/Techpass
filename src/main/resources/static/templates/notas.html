@@ -167,7 +167,6 @@
 						<input type="text" id="conteudomodal" class="form-control">
 						<label class="form-label mt-2" for="senhamodal">Senha</label>
 
-
 						<div class="row">
 							<div class="col-md-8">
 								<input type="password" id="senhamodal" class="form-control" minlength="6" maxlength="50"
@@ -245,7 +244,7 @@
 				$.ajax({
 					type: "DELETE",
 					contentType: "application/json",
-					url: "/techpass/nota?id=" + id,
+					url: "/techpass/nota/" + id,
 					success: function () {
 						remove.fadeOut(1500, function () {
 							remove.remove();
@@ -261,7 +260,7 @@
 			$.ajax({
 				type: "GET",
 				contentType: "application/json",
-				url: "/techpass/nota/id?id=" + id,
+				url: "/techpass/nota/" + id,
 				success: function (data) {
 					$('#senhamodal').attr("type", 'password');
 					$('#idmodal').val("");

@@ -5,13 +5,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.techgold.model.Nota;
@@ -25,40 +26,37 @@ public class NotaController {
 	NotaRepository notaRepository;
 	
 	@GetMapping
-	public List<Nota> listar(){
+	public ResponseEntity<List<Nota>> listar(){
 		Sort sort =  Sort.by("cliente.nome").ascending();
-		
-		return notaRepository.findAll(sort);
+		return ResponseEntity.ok().body(notaRepository.findAll(sort));
 	}
 	
 	@PostMapping
-	public Nota salvar(@RequestBody Nota nota) {
-		
+	public ResponseEntity<Nota> salvar(@RequestBody Nota nota) {
 		LocalDateTime data = LocalDateTime.now();
-		
 		if(nota.getId() != null){
 			nota.setAtualizacao(data);
-			return notaRepository.saveAndFlush(nota);
+			return ResponseEntity.ok().body(notaRepository.saveAndFlush(nota));
 		}else
 			nota.setAtualizacao(data);
-			return notaRepository.save(nota);
+			return ResponseEntity.ok().body(notaRepository.save(nota));
 	}
 	
-	@GetMapping("id")
-	public Nota notaPorId(@RequestParam(name = "id") Long id) {
-		return notaRepository.findById(id).get();
+	@GetMapping("/{id}")
+	public ResponseEntity<Nota> notaPorId(@PathVariable Long id) {
+		return ResponseEntity.ok().body(notaRepository.findById(id).get());
 	}
-	
 	
 	@PutMapping
-	public Nota atualizar(@RequestBody Nota nota) {
+	public ResponseEntity<Nota> atualizar(@RequestBody Nota nota) {
 		LocalDateTime data = LocalDateTime.now();
 		nota.setAtualizacao(data);
-		return notaRepository.saveAndFlush(nota);
+		return ResponseEntity.ok().body(notaRepository.saveAndFlush(nota));
 	}
 	
-	@DeleteMapping
-	public void deletar(@RequestParam(name = "id") Long id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deletar(@PathVariable Long id) {
 		notaRepository.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 }
