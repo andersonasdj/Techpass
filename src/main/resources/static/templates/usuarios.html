@@ -161,8 +161,11 @@
 						<input type="text" id="usuariomodal" class="form-control">
 						<label class="form-label mt-2" for="emailmodal">Email</label>
 						<input type="text" id="emailmodal" class="form-control">
-						<label class="form-label mt-2" for="rolemodal">Role</label>
-						<input type="text" id="rolemodal" class="form-control">
+						<label class="form-label" for="role">Role</label>
+						<select class="form-select" id="rolemodal" aria-label="Default select example" style="width: 150px;">
+							<option value="1">ADMIN</option>
+							<option value="8">USER</option>
+						</select>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -177,7 +180,8 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="exampleModalLabelSenha">Atualização de senha - <span id="nomeUsuarioModal"></span></h1>
+						<h1 class="modal-title fs-5" id="exampleModalLabelSenha">Atualização de senha - <span
+								id="nomeUsuarioModal"></span></h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -193,7 +197,8 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-						<button id="btnSave" type="button" class="btn btn-primary" onclick="changePassword()">Salvar</button>
+						<button id="btnSave" type="button" class="btn btn-primary"
+							onclick="changePassword()">Salvar</button>
 					</div>
 				</div>
 			</div>
@@ -227,11 +232,11 @@
 			success: function (data) {
 				var itens = data.map(i =>
 					'<tr id=linha' + i.id + '>'
-					+ '<td id=name' + i.id +'>' + i.name + '</td>'
+					+ '<td id=name' + i.id + '>' + i.name + '</td>'
 					+ '<td>' + i.username + '</td>'
 					+ '<td>' + i.email + '</td>'
 					+ '<td>'
-					+ '<button data-bs-toggle="modal" data-bs-target="#exampleModalSenha" onclick="preencheModalPassword(' + i.id +')" style="border: none; background: none;">'
+					+ '<button data-bs-toggle="modal" data-bs-target="#exampleModalSenha" onclick="preencheModalPassword(' + i.id + ')" style="border: none; background: none;">'
 					+ '<img src="./assets/img/key-change.png" style="height: 18px">'
 					+ '</button>'
 
@@ -299,34 +304,33 @@
 					$('#usuariomodal').val("");
 					$('#emailmodal').val("");
 					$('#rolemodal').val("");
-					
+
 					$('#idmodal').val(data.id);
 					$('#nomemodal').val(data.name);
 					$('#usuariomodal').val(data.username);
 					$('#emailmodal').val(data.email);
-					
-					
+
 				},
 				error: function (e) {
 					alert(e);
 				}
 			});
 		}
-		function preencheModalPassword(id){
+		function preencheModalPassword(id) {
 			$('#idmodalsenha').val("");
 			$('#senha').val("");
 			$('#nomeUsuarioModal').val("");
 			$('#idmodalsenha').val(id);
-			$('#nomeUsuarioModal').text($('#name'+id).text());
+			$('#nomeUsuarioModal').text($('#name' + id).text());
 			$('#btnSave').removeAttr('disabled');;
 			$('#password-status').text('');
 		}
-		
+
 		function changePassword(id) {
 			var idModalSenha = $('#idmodalsenha').val();
 			var senhaModal = $('#senha').val();
-			
-			if(senhaModal.length >= 8){
+
+			if (senhaModal.length >= 8) {
 				$.ajax({
 					type: "PUT",
 					contentType: "application/json",
@@ -336,19 +340,19 @@
 						"password": senhaModal
 					}),
 					success: function (data) {
-						$('#btnSave').attr("disabled","disabled");
+						$('#btnSave').attr("disabled", "disabled");
 						$('#password-status').text('');
-						$('#password-status').append("<b style='color: rgb(38, 162, 105);'>"+data+"</b>");
+						$('#password-status').append("<b style='color: rgb(38, 162, 105);'>" + data + "</b>");
 					},
 					error: function (e) {
 						alert(e);
 					}
 				});
-			}else{
+			} else {
 				$('#password-status').text('');
 				$('#password-status').append("<b style='color: red;'>Senha com menos de 8 caracteres</b>");
 			}
-			
+
 		}
 		function atualiza() {
 			var id = $('#idmodal').val();
@@ -364,7 +368,7 @@
 					"name": name,
 					"username": username,
 					"email": email
- 				}),
+				}),
 				success: function (data) {
 					var itens =
 						'<tr id=linha' + data.id + '>'
@@ -372,7 +376,7 @@
 						+ '<td>' + data.username + '</td>'
 						+ '<td>' + data.email + '</td>'
 						+ '<td>'
-						+ '<button data-bs-toggle="modal" data-bs-target="#exampleModalSenha" onclick="preencheModalPassword(' + data.id +')" style="border: none; background: none;">'
+						+ '<button data-bs-toggle="modal" data-bs-target="#exampleModalSenha" onclick="preencheModalPassword(' + data.id + ')" style="border: none; background: none;">'
 						+ '<img src="./assets/img/key-change.png" style="height: 18px">'
 						+ '</button>'
 						+ ' <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick=editar(' + data.id + ')>Editar</button>'

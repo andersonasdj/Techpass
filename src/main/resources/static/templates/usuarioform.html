@@ -14,7 +14,8 @@
 		<!-- ################### BARRA DE NAVEGAÇÃO  -->
 		<nav class="navbar navbar-expand-lg bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="/techpass/home"><img src="./assets/img/key.png" style="height: 18px;"> TechPass</a>
+				<a class="navbar-brand" href="/techpass/home"><img src="./assets/img/key.png" style="height: 18px;">
+					TechPass</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 					data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
 					aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +26,7 @@
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="/techpass/home">Início</a>
 						</li>
-						
+
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
 								aria-expanded="false">
@@ -74,15 +75,16 @@
 					</ul>
 					<ul class="navbar-nav mb-3 mb-lg-0">
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" id="perfil" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+							<a class="nav-link dropdown-toggle" id="perfil" href="#" role="button"
+								data-bs-toggle="dropdown" aria-expanded="false"></a>
 							<ul class="dropdown-menu">
 								<li><a class="dropdown-item" href="#">Perfil</a></li>
 								<li><a class="dropdown-item" href="/techpass/backup">Backup</a></li>
 							</ul>
 						</li>
-							<a href="/techpass/logout">
-								<img src="./assets/img/logout.png" style="width: 60px; border: none;" >
-							</a>
+						<a href="/techpass/logout">
+							<img src="./assets/img/logout.png" style="width: 60px; border: none;">
+						</a>
 					</ul>
 				</div>
 			</div>
@@ -154,7 +156,7 @@
 		</script>
 	<script>
 		function verificaForcaSenha() {
-			
+
 			var numeros = /([0-9])/;
 			var alfabeto = /([a-zA-Z])/;
 			var chEspeciais = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
@@ -170,14 +172,14 @@
 			}
 		}
 	</script>
-	
+
 	<script>
 		$.ajax({
 			type: "GET",
 			contentType: "application/json",
 			url: "/techpass/usuario/perfil",
 			success: function (data) {
-				$('#perfil').append("<b>"+data+"</b>");
+				$('#perfil').append("<b>" + data + "</b>");
 			},
 			error: function (e) {
 				alert(e);
@@ -191,14 +193,14 @@
 				$('#senha').attr("type", 'password');
 			}
 		}
-		
+
 		function salvar() {
 			var idusuario = $('#idusuario').val();
 			var name = $('#name').val();
 			var username = $('#username').val();
 			var password = $('#senha').val();
 			var email = $('#email').val();
-			
+
 			$.ajax({
 				type: "POST",
 				contentType: "application/json",
