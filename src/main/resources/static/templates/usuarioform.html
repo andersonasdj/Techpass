@@ -198,6 +198,7 @@
 			var username = $('#username').val();
 			var password = $('#senha').val();
 			var email = $('#email').val();
+			
 			$.ajax({
 				type: "POST",
 				contentType: "application/json",
@@ -207,7 +208,7 @@
 					"name": name,
 					"username": username,
 					"password": password,
-					"email": email,
+					"email": email
 				}),
 				success: function (data) {
 

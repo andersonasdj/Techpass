@@ -305,6 +305,7 @@
 					$('#usuariomodal').val(data.username);
 					$('#emailmodal').val(data.email);
 					
+					
 				},
 				error: function (e) {
 					alert(e);
@@ -362,8 +363,8 @@
 					"id": id,
 					"name": name,
 					"username": username,
-					"email": email,
-				}),
+					"email": email
+ 				}),
 				success: function (data) {
 					var itens =
 						'<tr id=linha' + data.id + '>'
@@ -371,10 +372,9 @@
 						+ '<td>' + data.username + '</td>'
 						+ '<td>' + data.email + '</td>'
 						+ '<td>'
-						+ '<button data-bs-toggle="modal" data-bs-target="#exampleModalSenha" onclick="preencheModalPassword(' + i.id +')" style="border: none; background: none;">'
+						+ '<button data-bs-toggle="modal" data-bs-target="#exampleModalSenha" onclick="preencheModalPassword(' + data.id +')" style="border: none; background: none;">'
 						+ '<img src="./assets/img/key-change.png" style="height: 18px">'
 						+ '</button>'
-						+ '<img src="./assets/img/key-change.png" style="height: 18px;"> '
 						+ ' <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick=editar(' + data.id + ')>Editar</button>'
 						+ ' <button class="btn btn-danger btn-sm" onclick=excluir(' + data.id + ')>Excluir</button>'
 						+ '</td>'

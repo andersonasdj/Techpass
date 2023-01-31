@@ -281,8 +281,9 @@
 					$('#observacaomodal').val(data.observacao);
 					$('#atualizacaomodal').append(data.atualizacao);
 				},
-				error: function (e) {
-					alert(e);
+				error: function (jqXHR, status, error) {
+					var err = eval("(" + jqXHR.responseText + ")");
+					alert(err.Message);
 				}
 			});
 		}
@@ -325,7 +326,7 @@
 					alert("atualizado com sucesso");
 				},
 				error: function (e) {
-					alert(e);
+					alert(e.responseText);
 				}
 			});
 		}
