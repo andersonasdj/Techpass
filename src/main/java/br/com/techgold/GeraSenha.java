@@ -1,17 +1,24 @@
 package br.com.techgold;
 
+import br.com.techgold.security.TokenService;
+
 public class GeraSenha {
 	
 	public String codificar(String pass) {
+		//TOKEN pref eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXNzIjoi
 		int qtd = pass.length();
 		String prefixo = gerarCod(qtd);
 		String sufixo = gerarCod(qtd);
 		String password = inverter(pass);
 		String result = prefixo + password + sufixo;
-		return result;
+		TokenService token = new TokenService();
+		String cod = token.gerarToken(result);
+		return cod.substring(49, cod.length());
 	}
 	
-	public String decodificar(String pass) {
+	public String decodificar(String token) {
+		TokenService tokenSevice = new TokenService();
+		String pass = tokenSevice.getPass("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXNzIjoi"+token);
 		int qtd = pass.length()/3;
 		String resultParcial;
 		resultParcial = pass.substring(qtd, qtd*2);
@@ -35,5 +42,4 @@ public class GeraSenha {
 		String invertida = new StringBuilder(valor).reverse().toString();
 		return invertida;
 	}
-	
 }

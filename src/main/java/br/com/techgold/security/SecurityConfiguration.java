@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -18,6 +19,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	CustomUserDatailsService userDatailsService;
+	
+	@Autowired
+	SecurityFilter securityFilter;
 	
 	private BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -34,17 +38,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.csrf().disable()
 		.authorizeRequests()
 		.antMatchers("/login").permitAll()
+		.antMatchers("/create").permitAll()
+		.antMatchers("/usuario/create").permitAll()
+		.antMatchers(HttpMethod.POST, "/usuario/create").permitAll()
 		.antMatchers(HttpMethod.POST, "/login").permitAll()
 		.anyRequest().authenticated()
-		.and()
+		.and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 		.httpBasic()
-		.and()
-		.formLogin()
-		.loginPage("/login")
+		.and().formLogin().loginPage("/login")
 		.defaultSuccessUrl("/home")
 		.failureUrl("/login?error=true")
-		.and()
-		.logout().logoutSuccessUrl("/login")
+		.and().logout().logoutSuccessUrl("/login")
 		.logoutUrl("/logout")
 		.invalidateHttpSession(true)
 		.deleteCookies("JSESSIONID");

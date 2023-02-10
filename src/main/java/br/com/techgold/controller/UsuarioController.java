@@ -27,6 +27,17 @@ public class UsuarioController {
 	@Autowired
 	UsuarioRepository repository;
 	
+	@PostMapping("create")
+	public String saveUserInitial(@RequestBody UsuarioDto dados) {
+		if(repository.findAll().isEmpty()) {
+			repository.save(new Usuario(dados));
+			System.out.println("aqui!!");
+			return "Usuário criado com sucesso!";
+		}else {
+			return "Usuário principal já foi criado! ";
+		}
+	}
+	
 	@GetMapping
 	public ResponseEntity<List<Usuario>> listaUsuarios(){
 		return ResponseEntity.ok().body(repository.findAll());

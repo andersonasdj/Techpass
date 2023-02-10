@@ -50,6 +50,7 @@ public class NotaController {
 			}
 			nota.setAtualizacao(data);
 			nota.setSenha(g.codificar(nota.getSenha()));
+			nota.setConteudo(g.codificar(nota.getConteudo()));
 			return ResponseEntity.ok().body(notaRepository.save(nota));
 	}
 	
@@ -58,6 +59,7 @@ public class NotaController {
 		GeraSenha g = new GeraSenha();
 		Nota nota = notaRepository.findById(id).get();
 		nota.setSenha(g.decodificar(nota.getSenha()));
+		nota.setConteudo(g.decodificar(nota.getConteudo()));
 		return ResponseEntity.ok().body(nota);
 	}
 	
@@ -69,6 +71,7 @@ public class NotaController {
 		}
 		GeraSenha g = new GeraSenha();
 		nota.setSenha(g.codificar(nota.getSenha()));
+		nota.setConteudo(g.codificar(nota.getConteudo()));
 		LocalDateTime data = LocalDateTime.now();
 		nota.setAtualizacao(data);
 		return ResponseEntity.ok().body(notaRepository.saveAndFlush(nota));
