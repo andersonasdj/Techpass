@@ -1,4 +1,4 @@
-package br.com.techgold.security;
+package br.com.techgold.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,6 +37,11 @@ public class Roles {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Roles [id=" + id + ", name=" + name + "]";
 	}
 
 }

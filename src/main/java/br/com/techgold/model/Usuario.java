@@ -1,5 +1,6 @@
 package br.com.techgold.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,7 +13,6 @@ import javax.persistence.ManyToMany;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.techgold.dto.UsuarioDto;
-import br.com.techgold.security.Roles;
 
 @Entity
 //@Table(name = "usuarios")
@@ -40,7 +40,7 @@ public class Usuario {
 		this.id = id;
 		this.name = name;
 		this.username = username;
-		this.password = password;
+		this.password = passwordEncoder().encode(password);
 		this.email = email;
 		this.roles = roles;
 	}
@@ -51,6 +51,7 @@ public class Usuario {
 		this.username = dados.username();
 		this.password = passwordEncoder().encode(dados.password());
 		this.email = dados.email();
+		this.roles = dados.roles();
 	}
 
 	public Long getId() {
@@ -97,8 +98,12 @@ public class Usuario {
 		return roles;
 	}
 
-	public void setRoles(List<Roles> roles) {
-		this.roles = roles;
+	public void setRoles(Roles roles) {
+		if(this.roles == null) {
+			this.roles = new ArrayList<>();
+		}
+		this.roles.clear();
+		this.roles.add(roles);
 	}
 
 	private BCryptPasswordEncoder passwordEncoder() {
@@ -108,4 +113,12 @@ public class Usuario {
 	public String atualizaPassword(String password) {
 		return passwordEncoder().encode(password);
 	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", name=" + name + ", username=" + username + ", password=" + password + ", email="
+				+ email + ", roles=" + roles + "]";
+	}
+	
 }
+
