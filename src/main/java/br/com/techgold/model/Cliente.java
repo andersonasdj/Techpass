@@ -19,15 +19,13 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
-	private String endereco;
 
 	public Cliente() {
 	}
 
-	public Cliente(Long id, String nome, String endereco) {
+	public Cliente(Long id, String nome) {
 		this.id = id;
 		this.nome = nome;
-		this.endereco = endereco;
 	}
 
 	public Long getId() {
@@ -44,14 +42,6 @@ public class Cliente {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
 	}
 
 	@Override

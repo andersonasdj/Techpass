@@ -101,8 +101,6 @@
 			</tbody>
 		</table>
 
-
-
 		<br /><br />
 		<footer class="text-center text-white">
 			<div class="container fixed-bottom ">
@@ -149,12 +147,10 @@
 						<input type="text" id="idmodal" class="form-control" readonly>
 						<label class="form-label" for="nome">Nome</label>
 						<input type="text" id="nomemodal" class="form-control">
-						<label class="form-label" for="endereco">Endereço</label>
-						<input type="text" id="enderecomodal" class="form-control">
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" onclick="atualiza()">Save changes</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+						<button type="button" class="btn btn-primary" onclick="atualiza()">Salvar</button>
 					</div>
 				</div>
 			</div>
@@ -237,7 +233,6 @@
 					$('#enderecomodal').val("");
 					$('#idmodal').val(data.id);
 					$('#nomemodal').val(data.nome);
-					$('#enderecomodal').val(data.endereco);
 				},
 				error: function (e) {
 					alert(e);
@@ -248,7 +243,6 @@
 		function atualiza() {
 			var id = $('#idmodal').val();
 			var nome = $('#nomemodal').val();
-			var endereco = $('#enderecomodal').val();
 
 			$.ajax({
 				type: "PUT",
@@ -256,8 +250,7 @@
 				url: "/techpass/cliente",
 				data: JSON.stringify({
 					"id": id,
-					"nome": nome,
-					"endereco": endereco
+					"nome": nome
 				}),
 				success: function (data) {
 

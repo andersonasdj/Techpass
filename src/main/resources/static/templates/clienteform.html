@@ -91,8 +91,6 @@
 		<div id="form-cliente">
 			<label for="nome" class="form-laber">Nome</label>
 			<input type="text" id="nome" class="form-control" style="width: 400px;">
-			<label for="endereco" class="form-laber">Endereço</label>
-			<input type="text" id="endereco" class="form-control" style="width: 400px;">
 		</div>
 		<br />
 		<button class="btn btn-success" onclick="salvar()">Salvar</button>
@@ -164,8 +162,7 @@
 				data: JSON.stringify(
 					{
 						"id": idcliente,
-						"nome": nome,
-						"endereco": endereco
+						"nome": nome
 					}
 				),
 				success: function (data) {
